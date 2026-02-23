@@ -220,7 +220,7 @@ limit 8;
 with
 septa_bus_stop_blockgroups as (
     -- Find Philadelphia county block groups within 800 meters for each
-    -- bus stop that don't spatially contain stop itself.
+    -- bus stop.
     select
         stops.stop_id,
         -- Match format used in population_2020 by prepending.
@@ -231,8 +231,6 @@ septa_bus_stop_blockgroups as (
             -- Keep block groups whose boundary falls within 800 meters 
             -- of stop.
             st_dwithin(stops.geog::geography, bg.geog::geography, 800)
-            -- Exclude block group that stop sits inside.
-            and not st_intersects(stops.geog::geography, bg.geog::geography)
     -- Restrict to Philadelphia county block groups only.
     where bg.geoid like '42101%'
 ),
@@ -266,14 +264,14 @@ limit 8;
 
 | stop_id | stop_name | estimated_pop_800m |
 |---|---|---|
-| 30840 | Delaware Av & Tioga St | 583 |
-| 31499 | Delaware Av & Castor Av | 583 |
-| 31500 | Delaware Av & Venango St | 583 |
+| 31500 | Delaware Av & Venango St | 593 |
+| 30840 | Delaware Av & Tioga St | 593 |
+| 31499 | Delaware Av & Castor Av | 593 |
+| 31788 | Northwestern Av & Stenton Av | 655 |
 | 31752 | Stenton Av & Northwestern Av | 655 |
 | 27000 | Bethlehem Pk & Chesney Ln | 655 |
 | 27152 | Bethlehem Pk & Chesney Ln | 655 |
-| 30839 | Delaware Av & Wheatsheaf Ln | 674 |
-| 19604 | Long Ln & Clinton Rd | 729 |
+| 30839 | Delaware Av & Wheatsheaf Ln | 684 |
 
 3.  Using the Philadelphia Water Department Stormwater Billing Parcels dataset, pair each parcel with its closest bus stop. The final result should give the parcel address, bus stop name, and distance apart in meters, rounded to two decimals. Order by distance (largest on top).
 
@@ -929,7 +927,7 @@ from (
         rail_geom.stop_lat,
         concat(
             distance_to_liberty_bell.distance_meters::text,
-            'm from LETTING THAT FREEDOM RING! 🔔🦅 #',
+            'm from LETTING FREEDOM RING! 🔔🦅 #',
             upper(coalesce(containing_neighborhood.neighborhood_name, 'Philadelphia'))
         ) as stop_desc
     from rail_stops_with_geom as rail_geom

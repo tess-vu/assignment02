@@ -17,7 +17,7 @@
 with
 septa_bus_stop_blockgroups as (
     -- Find Philadelphia county block groups within 800 meters for each
-    -- bus stop that don't spatially contain stop itself.
+    -- bus stop.
     select
         stops.stop_id,
         -- Match format used in population_2020 by prepending.
