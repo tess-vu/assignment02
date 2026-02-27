@@ -51,7 +51,7 @@ select
     pop.estimated_pop_800m
 from septa_bus_stop_surrounding_population as pop
 inner join septa.bus_stops as stops using (stop_id)
--- Sort ascending so least-served stops first.
-order by pop.estimated_pop_800m
+-- Sort ascending so least-served stops first, with stop_id as tie-breaker.
+order by pop.estimated_pop_800m, stops.stop_id
 -- Return only 8 stops w/ smallest surrounding population.
 limit 8;
